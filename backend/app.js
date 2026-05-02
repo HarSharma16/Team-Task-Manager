@@ -14,13 +14,12 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
 
+// ✅ Trust Railway proxy (important)
 app.set("trust proxy", 1);
 
-const configuredClientUrls = (process.env.CLIENT_URLS || process.env.CLIENT_URL || "http://localhost:5173")
-  .split(",")
-  .map((url) => url.trim())
-  .filter(Boolean);
-const allowLocalDevOrigin = (origin = "") => /^http:\/\/localhost:\d+$/.test(origin);
+// ❌ REMOVE this (no longer needed for now)
+// const configuredClientUrls = ...
+// const allowLocalDevOrigin = ...
 
 const ensureDatabaseConnection = async (req, res, next) => {
   try {
@@ -32,26 +31,19 @@ const ensureDatabaseConnection = async (req, res, next) => {
 };
 
 app.use(helmet());
+
+// ✅ TEMPORARY CORS FIX (IMPORTANT)
 app.use(
   cors({
-    origin(origin, callback) {
-      // Allow server-to-server/non-browser requests without Origin.
-      if (!origin) {
-        return callback(null, true);
-      }
-
-      if (configuredClientUrls.includes(origin) || allowLocalDevOrigin(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("CORS blocked for origin"));
-    },
+    origin: true,
     credentials: true
   })
 );
+
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
+
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
