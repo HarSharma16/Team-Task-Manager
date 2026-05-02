@@ -102,3 +102,33 @@ Frontend service:
   - `VITE_API_URL=https://your-backend-domain.railway.app/api`
 
 For public production use, set `ALLOW_ROLE_SIGNUP=false` after creating your first admin account or replace open role signup with an invitation flow.
+
+## Vercel Deployment
+
+Deploy the backend and frontend as two separate Vercel projects.
+
+Backend project:
+
+- Root directory: `backend`
+- Framework preset: Other
+- Build command: leave empty/default
+- Output directory: leave empty
+- Install command: `npm install`
+- Environment variables:
+  - `MONGO_URI`
+  - `JWT_SECRET`
+  - `JWT_EXPIRES_IN`
+  - `CLIENT_URL=https://your-frontend-domain.vercel.app`
+  - `CLIENT_URLS=https://your-frontend-domain.vercel.app,https://your-preview-domain.vercel.app` optional comma-separated list
+  - `ALLOW_ROLE_SIGNUP`
+
+Frontend project:
+
+- Root directory: `frontend`
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+- Environment variables:
+  - `VITE_API_URL=https://your-backend-domain.vercel.app/api`
+
+After deploying the backend, open `https://your-backend-domain.vercel.app/api/health`. It should return JSON with `databaseConfigured: true` and `jwtConfigured: true`. If either value is `false`, add the missing variable in the Vercel project settings and redeploy.
