@@ -13,6 +13,9 @@ const taskRoutes = require("./routes/taskRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
+
+app.set("trust proxy", 1);
+
 const configuredClientUrls = (process.env.CLIENT_URLS || process.env.CLIENT_URL || "http://localhost:5173")
   .split(",")
   .map((url) => url.trim())
