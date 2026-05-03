@@ -75,33 +75,7 @@ Tasks:
 - `GET /api/tasks/project/:projectId`
 - `PUT /api/tasks/:id`
 - `DELETE /api/tasks/:id` admin only
-
-## Railway Deployment
-
-Deploy the backend and frontend as separate Railway services.
-
-Backend service:
-
-- Root directory: `backend`
-- Build command: `npm install`
-- Start command: `npm start`
-- Environment variables:
-  - `PORT`
-  - `MONGO_URI`
-  - `JWT_SECRET`
-  - `JWT_EXPIRES_IN`
-  - `CLIENT_URL`
-  - `ALLOW_ROLE_SIGNUP`
-
-Frontend service:
-
-- Root directory: `frontend`
-- Build command: `npm install && npm run build`
-- Start command: `npm start`
-- Environment variables:
-  - `VITE_API_URL=https://your-backend-domain.railway.app/api`
-
-For public production use, set `ALLOW_ROLE_SIGNUP=false` after creating your first admin account or replace open role signup with an invitation flow.
+  
 
 ## Vercel Deployment
 
